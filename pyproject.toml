@@ -23,23 +23,33 @@ write_template = "__version__ = '{}'"
 includes = ["eeg_networks"]
 
 [tool.ruff]
-line-length = 120
+line-length = 100
 src = ["eeg_networks"]
 target-version = "py39"
 
 [tool.ruff.lint]
 select = [
-  "I",    # isort
-  "B",    # flake8-bugbear
-  "C4",   # flake8-comprehensions
-  "PGH",  # pygrep-hooks
-  "RUF",  # ruff
-  "W",    # pycodestyle
-  "YTT",  # flake8-2020
+    # Pyflakes
+    "F",
+    # Pycodestyle
+    "E",
+    "W",
+    # Isort
+    "I",
+    # Pyupgrade
+    "UP",
+    # Flake8
+    "B",
+    "C4",
+    "YTT",
+    "TID",
+    # "PTH",
+    # Pygrep-hooks
+    "PGH",
+    # Ruff-specific rules
+    "RUF",
 ]
-ignore = [
-    "F841"
-]
+ignore = ["F841", "PGH003", "UP038", "B008", "RUF001"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["eeg_networks"]
@@ -49,5 +59,5 @@ required-imports = ["from __future__ import annotations"]
 "__init__.py" = ["F401", "I002"]
 
 [build-system]
-requires = ["pdm-backend", "pdm-pyfuture"]
+requires = ["pdm-backend"]
 build-backend = "pdm.backend"

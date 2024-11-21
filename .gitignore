@@ -1,3 +1,4 @@
 .idea/*
 __pypackages__/*
 .pdm.toml
+__version__.py

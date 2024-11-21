@@ -1,27 +1,28 @@
 #!/usr/bin/env python
-# _*_ coding: utf-8 _*_
 # @Time : 2022/5/31 0:23
 # @Author : Rongrui Zhan
 # @desc : 本代码未经授权禁止商用
+from __future__ import annotations
+
 import torch
 import tqdm
 import typer
-from typing import Union
-from torch.utils.data import DataLoader
 from torch import nn, optim
-from eeg_networks import EEGInception, EEGSpatialLSTM, ERPDataset
+from torch.utils.data import DataLoader
 from utils import ModelName
 from val import validate
 
+from eeg_networks import EEGInception, EEGSpatialLSTM, ERPDataset
+
 
 def main(
-        model_name: ModelName = "inception",
-        device: str = "cuda",
-        dataset_path: str = './GIB-UVA ERP-BCI.hdf5',
-        batch_size: int = 8192,
-        max_epoch: int = 500,
-        pretrained: bool = True,
-        model_path: str = "./weights"
+    model_name: ModelName = "inception",
+    device: str = "cuda",
+    dataset_path: str = "./GIB-UVA ERP-BCI.hdf5",
+    batch_size: int = 8192,
+    max_epoch: int = 500,
+    pretrained: bool = True,
+    model_path: str = "./weights",
 ):
     train_dataset = ERPDataset(dataset_path, device=device)
     val_dataset = ERPDataset(dataset_path, train=False, device=device)
@@ -53,12 +54,15 @@ def main(
                 t.set_postfix(
                     loss=loss.item() / batch_size,
                     acc=torch.eq(out.argmax(dim=1), label).sum().item() / len(label),
-                    epoch=f"{epoch}/{max_epoch}"
+                    epoch=f"{epoch}/{max_epoch}",
                 )
         model.eval()
         val_mean_loss, val_mean_acc = validate(model, val_loader, loss_fn, len(val_dataset))
         print(val_mean_loss, val_mean_acc)
-        torch.save(model.state_dict(), f"{model_path}/{model_name}/epoch{epoch}_{val_mean_acc * 100:.2f}%.pth")
+        torch.save(
+            model.state_dict(),
+            f"{model_path}/{model_name}/epoch{epoch}_{val_mean_acc * 100:.2f}%.pth",
+        )
         torch.save(model.state_dict(), f"{model_path}/{model_name}/last.pth")
 
 

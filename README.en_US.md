@@ -59,4 +59,3 @@ python val.py --help
 ## References
 
 [GIB-UVa ERP-BCI dataset](https://www.kaggle.com/datasets/esantamaria/gibuva-erpbci-dataset?resource=download)
-

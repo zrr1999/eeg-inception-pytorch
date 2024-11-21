@@ -1,14 +1,16 @@
 #!/usr/bin/env python
-# _*_ coding: utf-8 _*_
 # @Time : 2022/6/5 17:30
 # @Author : Rongrui Zhan
 # @desc : 本代码未经授权禁止商用
+from __future__ import annotations
+
 import torch
 import typer
-from torch.utils.data import DataLoader
 from torch import nn
-from eeg_networks import EEGInception, EEGSpatialLSTM, ERPDataset
+from torch.utils.data import DataLoader
 from utils import ModelName
+
+from eeg_networks import EEGInception, EEGSpatialLSTM, ERPDataset
 
 
 def validate(model, val_loader, loss_fn, total):
@@ -27,11 +29,11 @@ def validate(model, val_loader, loss_fn, total):
 
 
 def main(
-        model_path: str = None,
-        model_name: ModelName = "inception",
-        device: str = "cuda",
-        dataset_path: str = './GIB-UVA ERP-BCI.hdf5',
-        batch_size: int = 8192,
+    model_path: str | None = None,
+    model_name: ModelName = "inception",
+    device: str = "cuda",
+    dataset_path: str = "./GIB-UVA ERP-BCI.hdf5",
+    batch_size: int = 8192,
 ):
     val_dataset = ERPDataset(dataset_path, train=False, device=device)
     val_loader = DataLoader(val_dataset, batch_size)
